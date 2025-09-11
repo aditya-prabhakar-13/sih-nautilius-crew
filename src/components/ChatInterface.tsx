@@ -33,10 +33,11 @@ const messages = [
 ];
 
 const suggestions = [
-  'Show me salinity profiles near the equator in March 2023',
-  'Compare BGC parameters in the Arabian Sea for the last 6 months',
-  'What is the average temperature in the Indian Ocean?',
-  'Visualize oxygen levels at 100m depth for 2022',
+  'Show me the seasonal variation of salinity in the Indian Ocean over the past year',
+  'Compare sea surface temperature and salinity in the Arabian Sea',
+  'Highlight regions with unusually low oxygen levels (<2 mg/L)',
+  'Show the correlation between air temperature and salinity for this dataset',
+  'Compare the current month’s ocean conditions with the same month last year',
 ];
 
 const ChatInterface = () => {
