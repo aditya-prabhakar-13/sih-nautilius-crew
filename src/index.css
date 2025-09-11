@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+#root {
+  @apply max-h-screen;
+}
 /* Ocean Data Dashboard Design System - All colors MUST be HSL */
 
 @layer base {
