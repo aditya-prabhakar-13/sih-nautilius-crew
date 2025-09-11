@@ -18,7 +18,7 @@ const App = () => (
       <BrowserRouter>
         <div className="flex h-screen bg-gradient-surface">
           <Sidebar />
-          <div className="flex-1 flex flex-col md:ml-64 h-screen">
+          <div className="flex-1 flex flex-col md:ml-64">
             <Header />
             <main className="flex-1 overflow-hidden">
               <Routes>
