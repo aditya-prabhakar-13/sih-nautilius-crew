@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ocean Data Dashboard Design System - All colors MUST be HSL */
+
+@layer base {
+  :root {
+    /* Ocean-inspired color palette */
+    --background: 220 20% 97%;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    /* Ocean blue primary theme */
+    --primary: 210 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 210 100% 40%;
+
+    /* Soft ocean secondary */
+    --secondary: 195 15% 96%;
+    --secondary-foreground: 215 25% 15%;
+
+    /* Subtle ocean muted tones */
+    --muted: 200 10% 95%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Aqua accent */
+    --accent: 185 70% 88%;
+    --accent-foreground: 215 25% 15%;
+
+    /* Ocean depth variations */
+    --ocean-deep: 220 50% 25%;
+    --ocean-medium: 210 60% 50%;
+    --ocean-light: 200 80% 85%;
+    --ocean-surface: 190 30% 95%;
+
+    /* Destructive coral */
+    --destructive: 5 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Clean borders and inputs */
+    --border: 200 15% 88%;
+    --input: 200 15% 88%;
+    --ring: 210 100% 45%;
+
+    /* Gradients */
+    --gradient-ocean: linear-gradient(135deg, hsl(var(--ocean-medium)), hsl(var(--ocean-deep)));
+    --gradient-surface: linear-gradient(180deg, hsl(var(--ocean-surface)), hsl(var(--background)));
+    --gradient-data: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--ocean-medium)));
+
+    /* Shadows */
+    --shadow-ocean: 0 4px 20px hsla(var(--ocean-medium), 0.15);
+    --shadow-card: 0 2px 10px hsla(var(--ocean-deep), 0.1);
+    --shadow-hover: 0 8px 30px hsla(var(--ocean-medium), 0.2);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark ocean theme */
+    --background: 220 50% 8%;
+    --foreground: 190 30% 95%;
+
+    --card: 220 45% 10%;
+    --card-foreground: 190 30% 95%;
+
+    --popover: 220 45% 10%;
+    --popover-foreground: 190 30% 95%;
+
+    --primary: 190 100% 60%;
+    --primary-foreground: 220 50% 8%;
+
+    --secondary: 220 30% 15%;
+    --secondary-foreground: 190 30% 95%;
+
+    --muted: 220 30% 15%;
+    --muted-foreground: 200 15% 65%;
+
+    --accent: 185 50% 25%;
+    --accent-foreground: 190 30% 95%;
+
+    --ocean-deep: 220 60% 15%;
+    --ocean-medium: 200 70% 35%;
+    --ocean-light: 190 50% 60%;
+    --ocean-surface: 185 20% 25%;
+
+    --destructive: 5 85% 60%;
+    --destructive-foreground: 190 30% 95%;
+
+    --border: 220 30% 18%;
+    --input: 220 30% 18%;
+    --ring: 190 100% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  /* Custom ocean animations */
+  @keyframes wave {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(5px) rotate(-1deg); }
+  }
+
+  .animate-wave {
+    animation: wave 3s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Gradient backgrounds */
+  .bg-gradient-ocean {
+    background: var(--gradient-ocean);
+  }
+
+  .bg-gradient-surface {
+    background: var(--gradient-surface);
+  }
+
+  .bg-gradient-data {
+    background: var(--gradient-data);
+  }
+
+  /* Custom shadows */
+  .shadow-ocean {
+    box-shadow: var(--shadow-ocean);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-hover {
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+}
