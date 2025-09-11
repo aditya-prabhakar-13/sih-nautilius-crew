@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -41,6 +41,7 @@ const ChatInterface = () => {
   const [inputValue, setInputValue] = useState('');
   const [chatMessages, setChatMessages] = useState(messages);
   const [visualization, setVisualization] = useState<string | null>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const handleSend = () => {
     if (inputValue.trim()) {
@@ -76,6 +77,14 @@ const ChatInterface = () => {
     }
   };
 
+  useEffect(() => {
+    // Auto-scroll to the bottom when new messages are added
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
+    }
+  }, [chatMessages, visualization]);
+
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSend();
@@ -88,10 +97,10 @@ const ChatInterface = () => {
         <CardTitle className="text-lg font-semibold text-primary">AI Chat</CardTitle>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col space-y-4 p-4 pt-0">
-        {/* Messages */}
-        <ScrollArea className="flex-1 pr-4">
-          <div className="space-y-4">
+      <CardContent className="flex-1 flex flex-col p-4 pt-0 overflow-hidden">
+        {/* Messages and Visualization Area */}
+        <ScrollArea className="flex-1 -mx-4" ref={scrollAreaRef}>
+          <div className="space-y-4 px-4 pb-4">
             {chatMessages.map((message) => (
               <div
                 key={message.id}
@@ -108,51 +117,53 @@ const ChatInterface = () => {
                 </div>
               </div>
             ))}
+            {/* Visualization Placeholder */}
+            {visualization && (
+              <div className="p-4 border rounded-lg bg-muted text-sm">
+                <strong>Visualization:</strong> {visualization}
+                <div className="mt-2 h-40 flex items-center justify-center bg-white border rounded-md text-muted-foreground">
+                  [Chart/Map will render here]
+                </div>
+              </div>
+            )}
           </div>
         </ScrollArea>
 
-        {/* Visualization Placeholder */}
-        {visualization && (
-          <div className="p-4 border rounded-lg bg-muted text-sm">
-            <strong>Visualization:</strong> {visualization}
-            <div className="mt-2 h-40 flex items-center justify-center bg-white border rounded-md text-muted-foreground">
-              [Chart/Map will render here]
+        {/* Fixed bottom controls */}
+        <div className="mt-auto pt-4 border-t border-border">
+          {/* Suggestions */}
+          <div className="space-y-2">
+            <p className="text-xs text-muted-foreground">Suggested queries:</p>
+            <div className="grid grid-cols-1 gap-2">
+              {suggestions.map((suggestion, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  className="w-full justify-start text-left text-xs p-2 h-auto whitespace-normal hover:bg-accent/50 transition-smooth"
+                  onClick={() => setInputValue(suggestion)}
+                >
+                  {suggestion}
+                </Button>
+              ))}
             </div>
           </div>
-        )}
 
-        {/* Suggestions */}
-        <div className="space-y-2">
-          <p className="text-xs text-muted-foreground">Suggested queries:</p>
-          <div className="grid grid-cols-1 gap-2">
-            {suggestions.map((suggestion, index) => (
-              <Button
-                key={index}
-                variant="outline"
-                className="w-full justify-start text-left text-xs p-2 h-auto whitespace-normal hover:bg-accent/50 transition-smooth" // Added whitespace-normal
-                onClick={() => setInputValue(suggestion)}
-              >
-                {suggestion}
-              </Button>
-            ))}
+          {/* Input */}
+          <div className="flex space-x-2 mt-4">
+            <Input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Type your message..."
+              className="flex-1"
+            />
+            <Button size="sm" onClick={handleSend} className="bg-gradient-data hover:opacity-90">
+              <Send className="h-4 w-4" />
+            </Button>
+            <Button size="sm" variant="outline">
+              <Mic className="h-4 w-4" />
+            </Button>
           </div>
-        </div>
-
-        {/* Input */}
-        <div className="flex space-x-2">
-          <Input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
-            className="flex-1"
-          />
-          <Button size="sm" onClick={handleSend} className="bg-gradient-data hover:opacity-90">
-            <Send className="h-4 w-4" />
-          </Button>
-          <Button size="sm" variant="outline">
-            <Mic className="h-4 w-4" />
-          </Button>
         </div>
       </CardContent>
     </Card>
