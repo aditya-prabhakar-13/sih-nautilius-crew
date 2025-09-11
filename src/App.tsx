@@ -20,7 +20,7 @@ const App = () => (
           <Sidebar />
           <div className="flex-1 flex flex-col md:ml-64 h-screen">
             <Header />
-            <main className="flex-1 overflow-hidden">
+            <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="*" element={<NotFound />} />
