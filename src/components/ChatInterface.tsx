@@ -5,30 +5,13 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, Mic } from 'lucide-react';
 
+// Initial mock messages
 const messages = [
   {
     id: 1,
     type: 'ai',
     content: 'Hello! I am your AI assistant for ocean data. How can I help you today?',
     timestamp: new Date(Date.now() - 5000),
-  },
-  {
-    id: 2,
-    type: 'user',
-    content: 'Show me salinity profiles near the equator in March 2023.',
-    timestamp: new Date(Date.now() - 4000),
-  },
-  {
-    id: 3,
-    type: 'ai',
-    content: 'Analyzing data for salinity profiles near the equator for March 2023. This might take a moment...',
-    timestamp: new Date(Date.now() - 3000),
-  },
-  {
-    id: 4,
-    type: 'ai',
-    content: 'Done! I found 15 profiles. The average salinity was 34.5 PSU. Would you like a detailed plot or a summary table?',
-    timestamp: new Date(Date.now() - 2000),
   },
 ];
 
@@ -40,12 +23,51 @@ const suggestions = [
   'Compare the current month’s ocean conditions with the same month last year',
 ];
 
+// Map each suggestion to a visualization type
+const visualizationMap: Record<string, string> = {
+  'Show me the seasonal variation of salinity in the Indian Ocean over the past year':
+    '📊 Time-series chart (Months vs Salinity)',
+  'Compare sea surface temperature and salinity in the Arabian Sea':
+    '📊 Dual-axis chart (SST vs Salinity)',
+  'Highlight regions with unusually low oxygen levels (<2 mg/L)':
+    '🗺️ Interactive Map highlighting hypoxic zones',
+  'Show the correlation between air temperature and salinity for this dataset':
+    '📊 Scatter plot (Air Temp vs Salinity)',
+  'Compare the current month’s ocean conditions with the same month last year':
+    '📊 Comparison chart (Bar/Radar)',
+};
+
 const ChatInterface = () => {
   const [inputValue, setInputValue] = useState('');
+  const [chatMessages, setChatMessages] = useState(messages);
+  const [visualization, setVisualization] = useState<string | null>(null);
 
   const handleSend = () => {
     if (inputValue.trim()) {
-      // Handle sending message
+      // Add user message
+      const newMessage = {
+        id: chatMessages.length + 1,
+        type: 'user',
+        content: inputValue,
+        timestamp: new Date(),
+      };
+
+      setChatMessages([...chatMessages, newMessage]);
+
+      // Check if input matches a suggestion to trigger visualization
+      if (visualizationMap[inputValue]) {
+        setVisualization(visualizationMap[inputValue]);
+
+        const aiMessage = {
+          id: chatMessages.length + 2,
+          type: 'ai',
+          content: `Generating visualization: ${visualizationMap[inputValue]}`,
+          timestamp: new Date(),
+        };
+
+        setChatMessages((prev) => [...prev, newMessage, aiMessage]);
+      }
+
       setInputValue('');
     }
   };
@@ -66,7 +88,7 @@ const ChatInterface = () => {
         {/* Messages */}
         <ScrollArea className="flex-1 pr-4">
           <div className="space-y-4">
-            {messages.map((message) => (
+            {chatMessages.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -85,6 +107,16 @@ const ChatInterface = () => {
           </div>
         </ScrollArea>
 
+        {/* Visualization Placeholder */}
+        {visualization && (
+          <div className="p-4 border rounded-lg bg-muted text-sm">
+            <strong>Visualization:</strong> {visualization}
+            <div className="mt-2 h-40 flex items-center justify-center bg-white border rounded-md text-muted-foreground">
+              [Chart/Map will render here]
+            </div>
+          </div>
+        )}
+
         {/* Suggestions */}
         <div className="space-y-2">
           <p className="text-xs text-muted-foreground">Suggested queries:</p>
@@ -93,8 +125,11 @@ const ChatInterface = () => {
               <Button
                 key={index}
                 variant="outline"
-                className="w-full justify-start text-left text-xs p-2 h-auto whitespace-normal hover:bg-accent/50 transition-smooth" // Added whitespace-normal
-                onClick={() => setInputValue(suggestion)}
+                className="text-left text-xs p-2 h-auto hover:bg-accent/50 transition-smooth"
+                onClick={() => {
+                  setInputValue(suggestion);
+                  handleSend();
+                }}
               >
                 {suggestion}
               </Button>
