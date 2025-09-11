@@ -3,28 +3,22 @@ import EarthVisualization from '@/components/EarthVisualization';
 import TemperatureChart from '@/components/TemperatureChart';
 import FloatDataTable from '@/components/FloatDataTable';
 import FilterPanel from '@/components/FilterPanel';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 const Index = () => {
   return (
-    <ScrollArea className="h-full">
-      <div className="p-6 space-y-6">
-        {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left Column - Chat Interface */}
-          <div className="lg:col-span-3">
-            <ChatInterface />
-          </div>
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full p-6">
+      {/* Left Column - Chat Interface */}
+      <div className="lg:col-span-3 h-full">
+        <ChatInterface />
+      </div>
 
+      {/* Scrollable container for Middle and Right Columns */}
+      <div className="lg:col-span-9 overflow-y-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-9 gap-6">
           {/* Middle Column - Main Content */}
           <div className="lg:col-span-6 space-y-6">
-            {/* Earth Visualization */}
             <EarthVisualization />
-
-            {/* Temperature Chart */}
             <TemperatureChart />
-
-            {/* Float Data Table */}
             <FloatDataTable />
           </div>
 
@@ -34,7 +28,7 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </ScrollArea>
+    </div>
   );
 };
 
