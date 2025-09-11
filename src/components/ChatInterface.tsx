@@ -9,7 +9,7 @@ import {
   ScatterChart, Scatter, BarChart, Bar, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis
 } from 'recharts';
 
-// Chat messages
+// --- Chat messages ---
 const initialMessages = [
   {
     id: 1,
@@ -19,7 +19,7 @@ const initialMessages = [
   },
 ];
 
-// Suggested prompts
+// --- Suggested prompts ---
 const suggestions = [
   'Show me the seasonal variation of salinity in the Indian Ocean over the past year',
   'Compare sea surface temperature and salinity in the Arabian Sea',
@@ -27,19 +27,8 @@ const suggestions = [
   'Show the correlation between air temperature and salinity for this dataset',
   'Compare the current month’s ocean conditions with the same month last year',
 ];
-// Map each suggestion to a visualization type
-const visualizationMap: Record<string, string> = {
-  'Show me the seasonal variation of salinity in the Indian Ocean over the past year':
-    '📊 Time-series chart (Months vs Salinity)',
-  'Compare sea surface temperature and salinity in the Arabian Sea':
-    '📊 Dual-axis chart (SST vs Salinity)',
-  'Highlight regions with unusually low oxygen levels (<2 mg/L)':
-    '🗺️ Interactive Map highlighting hypoxic zones',
-  'Show the correlation between air temperature and salinity for this dataset':
-    '📊 Scatter plot (Air Temp vs Salinity)',
-  'Compare the current month’s ocean conditions with the same month last year':
-    '📊 Comparison chart (Bar/Radar)',
-// Dummy data for charts
+
+// --- Dummy data for charts ---
 const seasonalSalinity = [
   { month: 'Jan', salinity: 34.5 },
   { month: 'Feb', salinity: 34.7 },
@@ -85,7 +74,7 @@ const yearComparison = [
   { variable: 'pH', thisYear: 8.0, lastYear: 8.1 },
 ];
 
-// Component to render different charts
+// --- Visualization component ---
 const Visualization = ({ query }: { query: string }) => {
   switch (query) {
     case suggestions[0]:
@@ -168,7 +157,8 @@ const ChatInterface = () => {
   const [inputValue, setInputValue] = useState('');
   const [chatMessages, setChatMessages] = useState(initialMessages);
   const [selectedQuery, setSelectedQuery] = useState<string | null>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
   const handleSend = () => {
     if (inputValue.trim()) {
@@ -179,17 +169,17 @@ const ChatInterface = () => {
         timestamp: new Date(),
       };
 
-      setChatMessages([...chatMessages, newMessage]);
+      setChatMessages((prev) => [...prev, newMessage]);
 
       if (suggestions.includes(inputValue)) {
         setSelectedQuery(inputValue);
         const aiMessage = {
           id: chatMessages.length + 2,
           type: 'ai',
-          content: `Generating visualization for: ${inputValue}`,
+          content: Generating visualization for: ${inputValue},
           timestamp: new Date(),
         };
-        setChatMessages((prev) => [...prev, newMessage, aiMessage]);
+        setChatMessages((prev) => [...prev, aiMessage]);
       }
 
       setInputValue('');
@@ -197,12 +187,13 @@ const ChatInterface = () => {
   };
 
   useEffect(() => {
-    // Auto-scroll to the bottom when new messages are added
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
+      scrollAreaRef.current.scrollTo({
+        top: scrollAreaRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
     }
-  }, [chatMessages, visualization]);
-
+  }, [chatMessages]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -217,13 +208,13 @@ const ChatInterface = () => {
       </CardHeader>
       
       <CardContent className="flex-1 flex flex-col p-4 pt-0 overflow-hidden">
-        {/* Messages and Visualization Area */}
+        {/* Messages + Visualization */}
         <ScrollArea className="flex-1 -mx-4" ref={scrollAreaRef}>
           <div className="space-y-4 px-4 pb-4">
             {chatMessages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                className={flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}}
               >
                 <div
                   className={`max-w-[80%] rounded-lg px-3 py-2 text-sm transition-smooth ${
@@ -236,20 +227,17 @@ const ChatInterface = () => {
                 </div>
               </div>
             ))}
-            {/* Visualization Placeholder */}
-            {visualization && (
-              <div className="p-4 border rounded-lg bg-muted text-sm">
-                <strong>Visualization:</strong> {visualization}
-                <div className="mt-2 h-40 flex items-center justify-center bg-white border rounded-md text-muted-foreground">
-                  [Chart/Map will render here]
-                </div>
+
+            {/* Visualization */}
+            {selectedQuery && (
+              <div className="p-4 border rounded-lg bg-muted">
+                <Visualization query={selectedQuery} />
               </div>
             )}
           </div>
         </ScrollArea>
 
-
-        {/* Fixed bottom controls */}
+        {/* Controls */}
         <div className="mt-auto pt-4 border-t border-border">
           {/* Suggestions */}
           <div className="space-y-2">
@@ -267,7 +255,6 @@ const ChatInterface = () => {
               ))}
             </div>
           </div>
-
 
           {/* Input */}
           <div className="flex space-x-2 mt-4">
@@ -291,4 +278,4 @@ const ChatInterface = () => {
   );
 };
 
-export default ChatInterface;
+export default ChatInterface;
