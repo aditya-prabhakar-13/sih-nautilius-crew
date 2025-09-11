@@ -44,31 +44,35 @@ const ChatInterface = () => {
 
   const handleSend = () => {
     if (inputValue.trim()) {
-      // Add user message
+      // Create the new user message object
       const newMessage = {
         id: chatMessages.length + 1,
-        type: 'user',
+        type: 'user' as const,
         content: inputValue,
         timestamp: new Date(),
       };
 
-      setChatMessages([...chatMessages, newMessage]);
-
-      // Check if input matches a suggestion to trigger visualization
+      // Check if the input triggers a visualization
       if (visualizationMap[inputValue]) {
         setVisualization(visualizationMap[inputValue]);
 
+        // Create the corresponding AI message
         const aiMessage = {
           id: chatMessages.length + 2,
-          type: 'ai',
+          type: 'ai' as const,
           content: `Generating visualization: ${visualizationMap[inputValue]}`,
           timestamp: new Date(),
         };
 
+        // Add both the user and AI messages to the state at once
         setChatMessages((prev) => [...prev, newMessage, aiMessage]);
+      } else {
+        // If no visualization, add only the user's message
+        setChatMessages((prev) => [...prev, newMessage]);
+        setVisualization(null); // Optional: Clear previous visualization
       }
 
-      setInputValue('');
+      setInputValue(''); // Clear the input field
     }
   };
 
