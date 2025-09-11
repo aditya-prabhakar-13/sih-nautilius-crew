@@ -92,7 +92,7 @@ const ChatInterface = () => {
               <Button
                 key={index}
                 variant="outline"
-                className="text-left text-xs p-2 h-auto hover:bg-accent/50 transition-smooth"
+                className="w-full justify-start text-left text-xs p-2 h-auto whitespace-normal hover:bg-accent/50 transition-smooth" // Added whitespace-normal
                 onClick={() => setInputValue(suggestion)}
               >
                 {suggestion}
