@@ -27,7 +27,18 @@ const suggestions = [
   'Show the correlation between air temperature and salinity for this dataset',
   'Compare the current month’s ocean conditions with the same month last year',
 ];
-
+// Map each suggestion to a visualization type
+const visualizationMap: Record<string, string> = {
+  'Show me the seasonal variation of salinity in the Indian Ocean over the past year':
+    '📊 Time-series chart (Months vs Salinity)',
+  'Compare sea surface temperature and salinity in the Arabian Sea':
+    '📊 Dual-axis chart (SST vs Salinity)',
+  'Highlight regions with unusually low oxygen levels (<2 mg/L)':
+    '🗺️ Interactive Map highlighting hypoxic zones',
+  'Show the correlation between air temperature and salinity for this dataset':
+    '📊 Scatter plot (Air Temp vs Salinity)',
+  'Compare the current month’s ocean conditions with the same month last year':
+    '📊 Comparison chart (Bar/Radar)',
 // Dummy data for charts
 const seasonalSalinity = [
   { month: 'Jan', salinity: 34.5 },
@@ -157,6 +168,7 @@ const ChatInterface = () => {
   const [inputValue, setInputValue] = useState('');
   const [chatMessages, setChatMessages] = useState(initialMessages);
   const [selectedQuery, setSelectedQuery] = useState<string | null>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const handleSend = () => {
     if (inputValue.trim()) {
