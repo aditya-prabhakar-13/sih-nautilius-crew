@@ -4,6 +4,10 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, Mic } from 'lucide-react';
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  ScatterChart, Scatter, BarChart, Bar, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis
+} from 'recharts';
 
 // Initial mock messages
 const messages = [
@@ -15,6 +19,7 @@ const messages = [
   },
 ];
 
+// Suggested queries
 const suggestions = [
   'Show me the seasonal variation of salinity in the Indian Ocean over the past year',
   'Compare sea surface temperature and salinity in the Arabian Sea',
@@ -23,29 +28,139 @@ const suggestions = [
   'Compare the current month’s ocean conditions with the same month last year',
 ];
 
-// Map each suggestion to a visualization type
-const visualizationMap: Record<string, string> = {
-  'Show me the seasonal variation of salinity in the Indian Ocean over the past year':
-    '📊 Time-series chart (Months vs Salinity)',
-  'Compare sea surface temperature and salinity in the Arabian Sea':
-    '📊 Dual-axis chart (SST vs Salinity)',
-  'Highlight regions with unusually low oxygen levels (<2 mg/L)':
-    '🗺️ Interactive Map highlighting hypoxic zones',
-  'Show the correlation between air temperature and salinity for this dataset':
-    '📊 Scatter plot (Air Temp vs Salinity)',
-  'Compare the current month’s ocean conditions with the same month last year':
-    '📊 Comparison chart (Bar/Radar)',
+// Dummy datasets
+const seasonalSalinity = [
+  { month: 'Jan', salinity: 34.5 },
+  { month: 'Feb', salinity: 34.7 },
+  { month: 'Mar', salinity: 35.0 },
+  { month: 'Apr', salinity: 34.8 },
+  { month: 'May', salinity: 34.4 },
+  { month: 'Jun', salinity: 34.6 },
+  { month: 'Jul', salinity: 35.2 },
+  { month: 'Aug', salinity: 35.1 },
+  { month: 'Sep', salinity: 34.9 },
+  { month: 'Oct', salinity: 34.7 },
+  { month: 'Nov', salinity: 34.5 },
+  { month: 'Dec', salinity: 34.8 },
+];
+
+const sstVsSalinity = [
+  { month: 'Jan', sst: 27, salinity: 34.6 },
+  { month: 'Feb', sst: 28, salinity: 34.8 },
+  { month: 'Mar', sst: 29, salinity: 35.1 },
+  { month: 'Apr', sst: 30, salinity: 35.0 },
+  { month: 'May', sst: 31, salinity: 34.7 },
+];
+
+const lowOxygenRegions = [
+  { region: 'Arabian Sea', oxygen: 1.8 },
+  { region: 'Bay of Bengal', oxygen: 2.5 },
+  { region: 'Indian Ocean South', oxygen: 1.5 },
+  { region: 'Equator Zone', oxygen: 3.2 },
+];
+
+const airTempVsSalinity = [
+  { airTemp: 25, salinity: 34.5 },
+  { airTemp: 26, salinity: 34.6 },
+  { airTemp: 27, salinity: 34.9 },
+  { airTemp: 28, salinity: 35.1 },
+  { airTemp: 29, salinity: 35.3 },
+];
+
+const yearComparison = [
+  { variable: 'SST', thisYear: 29, lastYear: 28 },
+  { variable: 'Salinity', thisYear: 35, lastYear: 34.7 },
+  { variable: 'Oxygen', thisYear: 2.1, lastYear: 2.4 },
+  { variable: 'pH', thisYear: 8.0, lastYear: 8.1 },
+];
+
+// Visualization renderer
+const Visualization = ({ query }: { query: string }) => {
+  switch (query) {
+    case suggestions[0]:
+      return (
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart data={seasonalSalinity}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="salinity" stroke="#8884d8" />
+          </LineChart>
+        </ResponsiveContainer>
+      );
+
+    case suggestions[1]:
+      return (
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart data={sstVsSalinity}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis yAxisId="left" orientation="left" />
+            <YAxis yAxisId="right" orientation="right" />
+            <Tooltip />
+            <Legend />
+            <Line yAxisId="left" type="monotone" dataKey="sst" stroke="#ff7300" />
+            <Line yAxisId="right" type="monotone" dataKey="salinity" stroke="#387908" />
+          </LineChart>
+        </ResponsiveContainer>
+      );
+
+    case suggestions[2]:
+      return (
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={lowOxygenRegions}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="region" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="oxygen" fill="#82ca9d" />
+          </BarChart>
+        </ResponsiveContainer>
+      );
+
+    case suggestions[3]:
+      return (
+        <ResponsiveContainer width="100%" height={250}>
+          <ScatterChart>
+            <CartesianGrid />
+            <XAxis dataKey="airTemp" name="Air Temp (°C)" />
+            <YAxis dataKey="salinity" name="Salinity (PSU)" />
+            <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+            <Scatter name="Correlation" data={airTempVsSalinity} fill="#8884d8" />
+          </ScatterChart>
+        </ResponsiveContainer>
+      );
+
+    case suggestions[4]:
+      return (
+        <ResponsiveContainer width="100%" height={250}>
+          <RadarChart cx="50%" cy="50%" outerRadius="80%" data={yearComparison}>
+            <PolarGrid />
+            <PolarAngleAxis dataKey="variable" />
+            <PolarRadiusAxis />
+            <Radar name="This Year" dataKey="thisYear" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+            <Radar name="Last Year" dataKey="lastYear" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+            <Legend />
+          </RadarChart>
+        </ResponsiveContainer>
+      );
+
+    default:
+      return null;
+  }
 };
 
 const ChatInterface = () => {
   const [inputValue, setInputValue] = useState('');
   const [chatMessages, setChatMessages] = useState(messages);
-  const [visualization, setVisualization] = useState<string | null>(null);
+  const [selectedQuery, setSelectedQuery] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const handleSend = () => {
     if (inputValue.trim()) {
-      // Create the new user message object
       const newMessage = {
         id: chatMessages.length + 1,
         type: 'user' as const,
@@ -53,37 +168,32 @@ const ChatInterface = () => {
         timestamp: new Date(),
       };
 
-      // Check if the input triggers a visualization
-      if (visualizationMap[inputValue]) {
-        setVisualization(visualizationMap[inputValue]);
-
-        // Create the corresponding AI message
+      if (suggestions.includes(inputValue)) {
+        setSelectedQuery(inputValue);
         const aiMessage = {
           id: chatMessages.length + 2,
           type: 'ai' as const,
-          content: `Generating visualization: ${visualizationMap[inputValue]}`,
+          content: `Generating visualization for: ${inputValue}`,
           timestamp: new Date(),
         };
-
-        // Add both the user and AI messages to the state at once
         setChatMessages((prev) => [...prev, newMessage, aiMessage]);
       } else {
-        // If no visualization, add only the user's message
         setChatMessages((prev) => [...prev, newMessage]);
-        setVisualization(null); // Optional: Clear previous visualization
+        setSelectedQuery(null);
       }
 
-      setInputValue(''); // Clear the input field
+      setInputValue('');
     }
   };
 
   useEffect(() => {
-    // Auto-scroll to the bottom when new messages are added
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
+      scrollAreaRef.current.scrollTo({
+        top: scrollAreaRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
     }
-  }, [chatMessages, visualization]);
-
+  }, [chatMessages, selectedQuery]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -96,9 +206,8 @@ const ChatInterface = () => {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-semibold text-primary">AI Chat</CardTitle>
       </CardHeader>
-      
+
       <CardContent className="flex-1 flex flex-col p-4 pt-0 overflow-hidden">
-        {/* Messages and Visualization Area */}
         <ScrollArea className="flex-1 -mx-4" ref={scrollAreaRef}>
           <div className="space-y-4 px-4 pb-4">
             {chatMessages.map((message) => (
@@ -117,21 +226,20 @@ const ChatInterface = () => {
                 </div>
               </div>
             ))}
-            {/* Visualization Placeholder */}
-            {visualization && (
+            {/* Visualization Output */}
+            {selectedQuery && (
               <div className="p-4 border rounded-lg bg-muted text-sm">
-                <strong>Visualization:</strong> {visualization}
-                <div className="mt-2 h-40 flex items-center justify-center bg-white border rounded-md text-muted-foreground">
-                  [Chart/Map will render here]
+                <strong>Visualization:</strong>
+                <div className="mt-2 h-64 bg-white border rounded-md flex items-center justify-center">
+                  <Visualization query={selectedQuery} />
                 </div>
               </div>
             )}
           </div>
         </ScrollArea>
 
-        {/* Fixed bottom controls */}
+        {/* Suggestions & Input */}
         <div className="mt-auto pt-4 border-t border-border">
-          {/* Suggestions */}
           <div className="space-y-2">
             <p className="text-xs text-muted-foreground">Suggested queries:</p>
             <div className="grid grid-cols-1 gap-2">
@@ -148,7 +256,6 @@ const ChatInterface = () => {
             </div>
           </div>
 
-          {/* Input */}
           <div className="flex space-x-2 mt-4">
             <Input
               value={inputValue}
@@ -171,3 +278,4 @@ const ChatInterface = () => {
 };
 
 export default ChatInterface;
+
