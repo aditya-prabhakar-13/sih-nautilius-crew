@@ -8,29 +8,27 @@ import FilterPanel from '@/components/FilterPanel';
 
 const Index = () => {
   return (
-    <div className="p-6 space-y-6">
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column - Chat Interface */}
-        <div className="lg:col-span-3">
-          <ChatInterface />
-        </div>
+    // Main grid now takes the full height of its container
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full p-6">
+      {/* Left Column: Chat Interface is now correctly constrained */}
+      <div className="lg:col-span-3 h-full">
+        <ChatInterface />
+      </div>
 
-        {/* Middle Column - Main Content */}
-        <div className="lg:col-span-6 space-y-6">
-          {/* Earth Visualization */}
-          <EarthVisualization />
-          
-          {/* Temperature Chart */}
-          <TemperatureChart />
-          
-          {/* Float Data Table */}
-          <FloatDataTable />
-        </div>
+      {/* Right Wrapper: This container will scroll if content overflows */}
+      <div className="lg:col-span-9 overflow-y-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-9 gap-6">
+          {/* Middle Column: Main Content */}
+          <div className="lg:col-span-6 space-y-6">
+            <EarthVisualization />
+            <TemperatureChart />
+            <FloatDataTable />
+          </div>
 
-        {/* Right Column - Filters */}
-        <div className="lg:col-span-3">
-          <FilterPanel />
+          {/* Right Column: Filters */}
+          <div className="lg:col-span-3">
+            <FilterPanel />
+          </div>
         </div>
       </div>
     </div>
