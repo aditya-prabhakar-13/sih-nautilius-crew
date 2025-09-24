@@ -19,7 +19,15 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 const EarthVisualization = () => {
   // Centered to show Indian Ocean, Arabian Sea, and Bay of Bengal
-  const position: L.LatLngExpression = [10, 80]; 
+  const position: L.LatLngExpression = [10, 80];
+
+  // Define the locations for the markers with their data
+  const locations = [
+    { position: [15.0, 65.0], name: "Arabian Sea", floatId: "11223", temperature: "336.15K", salinity: "35.19 PSU", oxygen:"4.64" },
+    { position: [15.0, 90.0], name: "Bay of Bengal", floatId: "67890", temperature: "301.73K", salinity: "31.44 PSU", oxygen:"10" },
+    { position: [-5.0, 75.0], name: "Indian Ocean 1", floatId: "12345", temperature: "300.31K", salinity: "33.87 PSU", oxygen:"5.11" },
+    { position: [-10.0, 85.0], name: "Indian Ocean 2", floatId: "44556", temperature: "289.15K", salinity: "36.32 PSU", oxygen:"5.23" }
+  ];
 
   return (
     <Card className="shadow-card hover:shadow-hover transition-smooth relative overflow-hidden">
@@ -40,14 +48,20 @@ const EarthVisualization = () => {
         <div className="relative rounded-lg overflow-hidden bg-muted">
           <MapContainer center={position} zoom={4} scrollWheelZoom={true} className="w-full h-96 rounded-lg">
             <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png"
             />
-            <Marker position={[10, 80]}>
-              <Popup>
-                Indian Ocean.
-              </Popup>
-            </Marker>
+            {/* Map over the locations to create markers with custom popups */}
+            {locations.map((loc, index) => (
+              <Marker key={index} position={loc.position as L.LatLngExpression}>
+                <Popup>
+                  <b>Float ID:</b> {loc.floatId} <br />
+                  <b>Temperature:</b> {loc.temperature} <br />
+                  <b>Salinity:</b> {loc.salinity} <br />
+                  <b>OMZ:</b> {loc.oxygen} &micro;M
+                </Popup>
+              </Marker>
+            ))}
           </MapContainer>
            {/* Overlay information */}
            <div className="absolute top-4 right-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 shadow-ocean z-[1000] pointer-events-none">

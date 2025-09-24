@@ -19,7 +19,7 @@ const floats = [
   },
   {
     id: '67890',
-    location: 'Pacific Ocean',
+    location: 'Bay of Bengal',
     lastUpdated: '2024-07-19',
     battery: 92,
     status: 'active'
@@ -33,7 +33,7 @@ const floats = [
   },
   {
     id: '44556',
-    location: 'Atlantic Ocean',
+    location: 'Indian Ocean',
     lastUpdated: '2024-07-18',
     battery: 89,
     status: 'active'
