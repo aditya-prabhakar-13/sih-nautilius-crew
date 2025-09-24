@@ -2,6 +2,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Bell, Search } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const Header = () => {
   return (
@@ -18,12 +26,52 @@ const Header = () => {
 
         {/* Right section */}
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" className="relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full flex items-center justify-center">
-              <span className="w-1.5 h-1.5 bg-destructive-foreground rounded-full"></span>
-            </span>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full flex items-center justify-center">
+                  <span className="w-1.5 h-1.5 bg-destructive-foreground rounded-full"></span>
+                </span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Recent Detections</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <div className="flex flex-col">
+                  <p className="font-medium">Unusual Temperature Spike</p>
+                  <p className="text-xs text-muted-foreground">
+                    Float #12345, Indian Ocean
+                  </p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <div className="flex flex-col">
+                  <p className="font-medium">High Salinity Anomaly</p>
+                  <p className="text-xs text-muted-foreground">
+                    Float #67890, Bay of Bengal
+                  </p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <div className="flex flex-col">
+                  <p className="font-medium">Increased Chlorophyll Levels</p>
+                  <p className="text-xs text-muted-foreground">
+                    Float #11223, Arabian Sea
+                  </p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <div className="flex flex-col">
+                  <p className="font-medium">Rapid Decrease in OMZ</p>
+                  <p className="text-xs text-muted-foreground">
+                    Float #44556, Indian Ocean
+                  </p>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           
           <div className="flex items-center space-x-3">
             {/* <Avatar className="w-8 h-8">
