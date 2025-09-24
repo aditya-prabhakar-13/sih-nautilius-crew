@@ -7,6 +7,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Download } from 'lucide-react';
 
 const FilterPanel = () => {
+
+  // This function handles downloading a file from the public folder.
+  const handleDownload = (filePath: string) => {
+    // In a Vite project, files in the 'public' directory are served at the root.
+    // We create a link element to trigger the download.
+    const link = document.createElement('a');
+    link.href = filePath;
+    
+    // Extract filename from the path to set the download attribute
+    link.setAttribute('download', filePath.substring(filePath.lastIndexOf('/') + 1));
+    
+    // Append to the document, click, and then remove
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Card className="shadow-card">
       <CardHeader>
@@ -76,15 +93,29 @@ const FilterPanel = () => {
         <div className="space-y-3 pt-4 border-t border-border">
           <Label className="text-sm font-medium text-foreground">Export Data</Label>
           <div className="space-y-2">
-            <Button variant="outline" className="w-full justify-start text-sm">
+            <Button
+              variant="outline"
+              className="w-full justify-start text-sm"
+              onClick={() => handleDownload('/profile_data.csv')}
+            >
               <Download className="mr-2 h-4 w-4" />
               Download CSV
             </Button>
-            <Button variant="outline" className="w-full justify-start text-sm">
+            
+            <Button 
+              variant="outline" 
+              className="w-full justify-start text-sm"
+              onClick={() => handleDownload('/20250924_prof.nc')}
+            >
               <Download className="mr-2 h-4 w-4" />
               Download NetCDF
             </Button>
-            <Button variant="outline" className="w-full justify-start text-sm">
+
+            <Button 
+              variant="outline" 
+              className="w-full justify-start text-sm"
+              onClick={() => handleDownload('/20250924_prof.txt')}
+            >
               <Download className="mr-2 h-4 w-4" />
               Download ASCII
             </Button>
@@ -96,3 +127,4 @@ const FilterPanel = () => {
 };
 
 export default FilterPanel;
+
