@@ -206,7 +206,7 @@ const ChatInterface = () => {
   };
 
   return (
-    <Card className="h-[90vh] flex flex-col shadow-card">
+    <Card className="h-[85vh] flex flex-col shadow-card">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-semibold text-primary">AI Chat</CardTitle>
       </CardHeader>
