@@ -1,24 +1,26 @@
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { 
-  BarChart3, 
-  MessageSquare, 
-  Database, 
-  Settings, 
+import {
+  BarChart3,
+  MessageSquare,
+  Database,
+  Settings,
   Menu,
-  X 
+  X
 } from 'lucide-react';
 
 const navigation = [
-  { name: 'Dashboard', icon: BarChart3, current: true },
-  { name: 'AI Chat', icon: MessageSquare, current: false },
-  { name: 'Data Explorer', icon: Database, current: false },
-  { name: 'Settings', icon: Settings, current: false },
+  { name: 'Dashboard', href: '/', icon: BarChart3 },
+  { name: 'AI Chat', href: '/ai-chat', icon: MessageSquare },
+  { name: 'Data Explorer', href: '/data-explorer', icon: Database },
+  { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <>
@@ -51,18 +53,20 @@ const Sidebar = () => {
           <ul className="space-y-2">
             {navigation.map((item) => (
               <li key={item.name}>
-                <Button
-                  variant={item.current ? "default" : "ghost"}
-                  className={cn(
-                    "w-full justify-start transition-smooth",
-                    item.current 
-                      ? "bg-gradient-data text-primary-foreground shadow-ocean" 
-                      : "hover:bg-accent/50 text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  <item.icon className="mr-3 h-5 w-5" />
-                  {item.name}
-                </Button>
+                <Link to={item.href} >
+                  <Button
+                    variant={location.pathname === item.href ? "default" : "ghost"}
+                    className={cn(
+                      "w-full justify-start transition-smooth",
+                      location.pathname === item.href
+                        ? "bg-gradient-data text-primary-foreground shadow-ocean"
+                        : "hover:bg-accent/50 text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    <item.icon className="mr-3 h-5 w-5" />
+                    {item.name}
+                  </Button>
+                </Link>
               </li>
             ))}
           </ul>
@@ -84,7 +88,7 @@ const Sidebar = () => {
 
       {/* Overlay for mobile */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-30 bg-background/50 backdrop-blur-sm md:hidden"
           onClick={() => setIsOpen(false)}
         />
