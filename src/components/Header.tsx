@@ -26,15 +26,15 @@ const Header = () => {
           </Button>
           
           <div className="flex items-center space-x-3">
-            <Avatar className="w-8 h-8">
+            {/* <Avatar className="w-8 h-8">
               <AvatarFallback className="bg-ocean-light text-ocean-deep text-sm">
                 JD
               </AvatarFallback>
-            </Avatar>
-            <div className="hidden md:block">
+            </Avatar> */}
+            {/* <div className="hidden md:block">
               <p className="text-sm font-medium text-foreground">Jane Doe</p>
               <p className="text-xs text-muted-foreground">Ocean Analyst</p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
