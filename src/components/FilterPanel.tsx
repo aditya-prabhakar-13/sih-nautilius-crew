@@ -50,7 +50,7 @@ const FilterPanel = () => {
 
         {/* Time Range */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium text-foreground">Time Range</Label>
+          <Label className="text-sm font-medium text-foreground">Date</Label>
           <Input 
             type="date" 
             defaultValue="2024-07-22"
