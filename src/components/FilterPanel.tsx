@@ -96,7 +96,7 @@ const FilterPanel = () => {
             <Button
               variant="outline"
               className="w-full justify-start text-sm"
-              onClick={() => handleDownload('/profile_data.csv')}
+              onClick={() => handleDownload('/20250924_prof.csv')}
             >
               <Download className="mr-2 h-4 w-4" />
               Download CSV
