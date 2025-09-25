@@ -76,11 +76,11 @@ const EarthVisualization = () => {
         <div className="grid grid-cols-3 gap-4 mt-6">
           <div className="text-center p-3 bg-accent/30 rounded-lg">
             <p className="text-sm text-muted-foreground">Active Floats</p>
-            <p className="text-xl font-bold text-primary">156</p>
+            <p className="text-xl font-bold text-primary">2.8K</p>
           </div>
           <div className="text-center p-3 bg-accent/30 rounded-lg">
             <p className="text-sm text-muted-foreground">Data Points</p>
-            <p className="text-xl font-bold text-primary">2.8K</p>
+            <p className="text-xl font-bold text-primary">4.2K</p>
           </div>
           <div className="text-center p-3 bg-accent/30 rounded-lg">
             <p className="text-sm text-muted-foreground">Coverage</p>
