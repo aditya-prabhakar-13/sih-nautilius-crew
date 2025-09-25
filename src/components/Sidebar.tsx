@@ -14,7 +14,7 @@ import {
 const navigation = [
   { name: 'Dashboard', href: '/', icon: BarChart3 },
   { name: 'AI Chat', href: '/ai-chat', icon: MessageSquare },
-  { name: 'Data Explorer', href: '/data-explorer', icon: Database },
+  // { name: 'Data Explorer', href: '/data-explorer', icon: Database },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
