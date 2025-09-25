@@ -76,10 +76,10 @@ const Sidebar = () => {
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-ocean-light rounded-full flex items-center justify-center">
-              <span className="text-sm font-medium text-ocean-deep">JD</span>
+              <span className="text-sm font-medium text-ocean-deep">AP</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">Jane Doe</p>
+              <p className="text-sm font-medium text-foreground truncate">Aditya Prabhakar</p>
               <p className="text-xs text-muted-foreground truncate">Analyst</p>
             </div>
           </div>
