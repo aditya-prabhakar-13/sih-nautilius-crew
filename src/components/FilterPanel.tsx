@@ -44,6 +44,7 @@ const FilterPanel = () => {
               <SelectItem value="pacific-ocean">Pacific Ocean</SelectItem>
               <SelectItem value="atlantic-ocean">Atlantic Ocean</SelectItem>
               <SelectItem value="arabian-sea">Arabian Sea</SelectItem>
+              <SelectItem value="bay-of-bengal">Bay of Bengal</SelectItem>
             </SelectContent>
           </Select>
         </div>
