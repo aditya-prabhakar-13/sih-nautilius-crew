@@ -35,7 +35,7 @@ const FilterPanel = () => {
         {/* Region Filter */}
         <div className="space-y-2">
           <Label className="text-sm font-medium text-foreground">Region</Label>
-          <Select defaultValue="indian-ocean">
+          <Select defaultValue="arabian-sea">
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -64,13 +64,13 @@ const FilterPanel = () => {
           <Label className="text-sm font-medium text-foreground">Parameters</Label>
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
-              <Checkbox id="temperature" defaultChecked />
+              <Checkbox id="temperature" />
               <Label htmlFor="temperature" className="text-sm text-muted-foreground">
                 Temperature
               </Label>
             </div>
             <div className="flex items-center space-x-2">
-              <Checkbox id="salinity" defaultChecked />
+              <Checkbox id="salinity" />
               <Label htmlFor="salinity" className="text-sm text-muted-foreground">
                 Salinity
               </Label>
@@ -97,7 +97,7 @@ const FilterPanel = () => {
             <Button
               variant="outline"
               className="w-full justify-start text-sm"
-              onClick={() => handleDownload('/20250924_prof.csv')}
+              onClick={() => handleDownload('/profile_data.csv')}
             >
               <Download className="mr-2 h-4 w-4" />
               Download CSV
