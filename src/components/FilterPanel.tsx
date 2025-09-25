@@ -53,7 +53,7 @@ const FilterPanel = () => {
           <Label className="text-sm font-medium text-foreground">Date</Label>
           <Input 
             type="date" 
-            defaultValue="2024-07-22"
+            defaultValue="2025-09-23"
             className="w-full"
           />
         </div>
