@@ -4,9 +4,6 @@
 Our platform transforms complex oceanographic data into accessible and actionable insights for both technical and non-technical users. By combining AI-powered query interpretation with high-performance visualizations, we enable users to explore, analyze, and understand ocean data efficiently.
 
 ---
-
-## Unique Selling Points (USP)
-
 ### 1. AI Query Engine
 We leverage the **LangChain** open-source framework, originally developed by MIT students, with a unique twist: integration of the **RASA** conversational tool as a suggestion model.  
 - Interprets user intent and suggests clarifications for ambiguous queries.  
