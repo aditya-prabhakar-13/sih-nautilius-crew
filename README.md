@@ -1,73 +1,45 @@
-# Welcome to your Lovable project
+# Ocean Insights Platform
 
-## Project info
+## Overview
+Our platform transforms complex oceanographic data into accessible and actionable insights for both technical and non-technical users. By combining AI-powered query interpretation with high-performance visualizations, we enable users to explore, analyze, and understand ocean data efficiently.
 
-**URL**: https://lovable.dev/projects/6e1f95b8-23e0-4f41-a6a5-703fa85f736d
 
-## How can I edit this code?
+### 1. AI Query Engine
+We leverage the **LangChain** open-source framework, originally developed by MIT students, with a unique twist: integration of the **RASA** conversational tool as a suggestion model.  
+- Interprets user intent and suggests clarifications for ambiguous queries.  
+- Example: A query for "temperature trends" may be clarified as a request for a "seasonal anomaly comparison".  
+- Ensures accurate and relevant insights, even for non-technical users.
 
-There are several ways of editing your application.
+### 2. Highly Interactive Interface
+- **Visualization:** Built with **Recharts**, enabling dynamic, responsive, and customizable graphs.  
+- **Performance:** **TanStack Query** in **React.js** manages background fetching, caching, and updates efficiently.  
+- Provides smooth, near real-time interactions even with large datasets.
 
-**Use Lovable**
+### 3. Flexibility for All User Types
+- Automatically selects the best visualization tool for different data types:
+  - Maps for float trajectories
+  - Line charts for anomalies
+  - Comparison plots for parameter analysis  
+- Users can also switch views, adjust scales, or change axes for personalized exploration.  
+- Intuitive for beginners, powerful for expert analysts.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/6e1f95b8-23e0-4f41-a6a5-703fa85f736d) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## Future Roadmap
+- Fully integrate **ARGO datasets** for comprehensive ocean data coverage.  
+- Introduce a dedicated **AI Chatbot tab** for domain-specific query resolution.  
+- Build a **Data Explorer** that allows filtering, exploration, and export of curated datasets (e.g., CSV) for downstream workflows.
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Tech Stack
+- **AI & NLP:** LangChain + RASA  
+- **Frontend:** React.js, Recharts, TanStack Query  
+- **Data Handling:** Curated datasets with flexible visualization options  
+- **Future Enhancements:** AI Chatbot, Data Explorer
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## Summary
+Our differentiation comes from combining **AI-powered prompt refinement**, **high-performance visualization**, and **flexible data management**. The platform is designed to be **fast, interactive, and scalable**, evolving with the needs of both technical and non-technical users.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/6e1f95b8-23e0-4f41-a6a5-703fa85f736d) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
