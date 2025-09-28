@@ -10,13 +10,13 @@ import {
   AreaChart, Area, ComposedChart
 } from 'recharts';
 
-// The conversation will start with just this single message.
+// The conversation will start with just this single, simplified message.
 const initialMessages = [
   {
     id: 1,
     type: 'ai',
-    content: 'Hello! I am your AI assistant for ocean data. How can I help you today?',
-    timestamp: new Date(Date.now() - 5000).toISOString(),
+    content: 'Hey, How can I help you',
+    timestamp: new Date().toISOString(),
   },
 ];
 
@@ -171,25 +171,15 @@ const ChatInterface = () => {
       timestamp: new Date().toISOString(),
     };
 
-    // Add user message to the chat
     const newMessages = [...chatMessages, userMessage];
     let newSelectedQuery = null;
 
-    const trimmedInput = inputValue.trim().toLowerCase();
+    // A more flexible check for the vague prompt
+    const isVagueTempQuery = inputValue.toLowerCase().includes('temperature data');
 
-    // *** START OF DEMO LOGIC ***
-    if (trimmedInput === 'show me temperature data') {
-      // Handle the specific vague prompt
-      const aiClarificationMessage = {
-        id: Date.now() + 1,
-        type: 'ai' as const,
-        content: `Certainly! Could you please clarify what kind of temperature data you're interested in? For example, you could ask to:\n\n• Compare average deep sea vs. surface temperature\n• Show the correlation between air temperature and salinity`,
-        timestamp: new Date().toISOString(),
-      };
-      newMessages.push(aiClarificationMessage);
-
-    } else if (suggestions.includes(inputValue)) {
-      // Handle a direct, valid query (including the clarification)
+    // First, check if the input is a specific, known query from the suggestions list.
+    // This prevents a valid query from being misinterpreted as vague.
+    if (suggestions.includes(inputValue)) {
       newSelectedQuery = inputValue;
       const aiResponseMessage = {
         id: Date.now() + 1,
@@ -199,8 +189,18 @@ const ChatInterface = () => {
       };
       newMessages.push(aiResponseMessage);
 
+    // If it's not a known query, THEN check if it's the vague one we want to demonstrate.
+    } else if (isVagueTempQuery) {
+      const aiClarificationMessage = {
+        id: Date.now() + 1,
+        type: 'ai' as const,
+        content: `Certainly! Could you please clarify what kind of temperature data you're interested in? For example, you could ask to:\n\n• Compare average deep sea vs. surface temperature\n• Show the correlation between air temperature and salinity`,
+        timestamp: new Date().toISOString(),
+      };
+      newMessages.push(aiClarificationMessage);
+
+    // Fallback for any other message
     } else {
-      // Fallback for any other message
       const aiFallbackMessage = {
         id: Date.now() + 1,
         type: 'ai' as const,
@@ -209,7 +209,6 @@ const ChatInterface = () => {
       };
       newMessages.push(aiFallbackMessage);
     }
-    // *** END OF DEMO LOGIC ***
 
     setChatMessages(newMessages);
     setSelectedQuery(newSelectedQuery);
@@ -260,7 +259,6 @@ const ChatInterface = () => {
                 </div>
               </div>
             ))}
-            {/* Visualization Output */}
             {selectedQuery && (
               <div className="p-4 border rounded-lg bg-muted text-sm">
                 <strong>Visualization:</strong>
@@ -272,7 +270,6 @@ const ChatInterface = () => {
           </div>
         </ScrollArea>
 
-        {/* Suggestions & Input */}
         <div className="mt-auto pt-4 border-t border-border">
           <div className="space-y-2">
             <p className="text-xs text-muted-foreground">Suggested queries:</p>
