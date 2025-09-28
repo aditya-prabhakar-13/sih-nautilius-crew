@@ -10,7 +10,7 @@ import {
   AreaChart, Area, ComposedChart
 } from 'recharts';
 
-// Initial mock messages (used if no history exists)
+// The conversation will start with just this single message.
 const initialMessages = [
   {
     id: 1,
@@ -39,7 +39,7 @@ const suggestions = [
   'Compare average deep sea vs. surface temperature'
 ];
 
-// Dummy datasets
+// Dummy datasets (remain unchanged)
 const seasonalSalinity = [
   { month: 'Jan', salinity: 34.5 }, { month: 'Feb', salinity: 34.7 }, { month: 'Mar', salinity: 35.0 },
   { month: 'Apr', salinity: 34.8 }, { month: 'May', salinity: 34.4 }, { month: 'Jun', salinity: 34.6 },
@@ -62,7 +62,6 @@ const yearComparison = [
   { variable: 'SST', thisYear: 29, lastYear: 28 }, { variable: 'Salinity', thisYear: 35, lastYear: 34.7 },
   { variable: 'Oxygen', thisYear: 2.1, lastYear: 2.4 }, { variable: 'pH', thisYear: 8.0, lastYear: 8.1 },
 ];
-// New Datasets
 const nitrateByDepth = [
   { depth: 0, nitrate: 0.5 }, { depth: 50, nitrate: 0.8 }, { depth: 100, nitrate: 2.1 },
   { depth: 200, nitrate: 5.5 }, { depth: 500, nitrate: 15.2 }, { depth: 1000, nitrate: 25.0 },
@@ -163,30 +162,60 @@ const ChatInterface = () => {
   }, [getRandomSuggestions]);
 
   const handleSend = () => {
-    if (inputValue.trim()) {
-      const newMessage = {
-        id: chatMessages.length + 1,
-        type: 'user' as const,
-        content: inputValue,
+    if (!inputValue.trim()) return;
+
+    const userMessage = {
+      id: Date.now(),
+      type: 'user' as const,
+      content: inputValue,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Add user message to the chat
+    const newMessages = [...chatMessages, userMessage];
+    let newSelectedQuery = null;
+
+    const trimmedInput = inputValue.trim().toLowerCase();
+
+    // *** START OF DEMO LOGIC ***
+    if (trimmedInput === 'show me temperature data') {
+      // Handle the specific vague prompt
+      const aiClarificationMessage = {
+        id: Date.now() + 1,
+        type: 'ai' as const,
+        content: `Certainly! Could you please clarify what kind of temperature data you're interested in? For example, you could ask to:\n\n• Compare average deep sea vs. surface temperature\n• Show the correlation between air temperature and salinity`,
         timestamp: new Date().toISOString(),
       };
+      newMessages.push(aiClarificationMessage);
 
-      if (suggestions.includes(inputValue)) {
-        setSelectedQuery(inputValue);
-        const aiMessage = {
-          id: chatMessages.length + 2,
-          type: 'ai' as const,
-          content: `Generating visualization for: ${inputValue}`,
-          timestamp: new Date().toISOString(),
-        };
-        setChatMessages((prev) => [...prev, newMessage, aiMessage]);
-      } else {
-        setChatMessages((prev) => [...prev, newMessage]);
-        setSelectedQuery(null);
-      }
+    } else if (suggestions.includes(inputValue)) {
+      // Handle a direct, valid query (including the clarification)
+      newSelectedQuery = inputValue;
+      const aiResponseMessage = {
+        id: Date.now() + 1,
+        type: 'ai' as const,
+        content: `Great! Generating visualization for: ${inputValue}`,
+        timestamp: new Date().toISOString(),
+      };
+      newMessages.push(aiResponseMessage);
 
-      setInputValue('');
-      getRandomSuggestions();
+    } else {
+      // Fallback for any other message
+      const aiFallbackMessage = {
+        id: Date.now() + 1,
+        type: 'ai' as const,
+        content: "I'm sorry, I don't have the data for that. Please try one of the suggested queries or a more specific question.",
+        timestamp: new Date().toISOString(),
+      };
+      newMessages.push(aiFallbackMessage);
+    }
+    // *** END OF DEMO LOGIC ***
+
+    setChatMessages(newMessages);
+    setSelectedQuery(newSelectedQuery);
+    setInputValue('');
+    if (newSelectedQuery === null) {
+        getRandomSuggestions();
     }
   };
 
@@ -200,7 +229,8 @@ const ChatInterface = () => {
   }, [chatMessages, selectedQuery]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
       handleSend();
     }
   };
@@ -220,7 +250,7 @@ const ChatInterface = () => {
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg px-3 py-2 text-sm transition-smooth ${
+                  className={`max-w-[80%] rounded-lg px-3 py-2 text-sm transition-smooth whitespace-pre-wrap ${
                     message.type === 'user'
                       ? 'bg-gradient-data text-primary-foreground'
                       : 'bg-accent text-accent-foreground'
